@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="w-100 mt-md-8 home-img">
+        <div class="w-100 h-100 overflow-hidden text-center">
+            <div class="position-relative h-100">
+                <img class="mt-md-8" src="{{ asset('build/img/homepage.jpg') }}" alt="Home Tricks" />
+                <h1 class="position-absolute text-light h2 slogan w-50 text-center">Rejoignez la plus grande communauté de fans de snow</h1>
+                <div class="position-absolute home-img-arrow">
+                    <button class="btn position-relative" type="button" data-toggle="collapse" data-target="#trickList" aria-expanded="false" aria-controls="trickList">
+                        <i class="fas fa-arrow-circle-down"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="collapse container-fluid" id="trickList">
+        <ul class="row text-center px-0 list-unstyled">
+            <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
+            <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
+            <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
+            <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
+            <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
+            <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
+            <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
+            <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
+            <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
+            <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
+
+        </ul>
+    </div>
+
+{% endblock %}
