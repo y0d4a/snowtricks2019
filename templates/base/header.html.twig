@@ -1,0 +1,61 @@
+{% block header %}
+    <header>
+        <nav class="navbar navbar-expand navbar-light bg-light py-0">
+            <a class="navbar-brand col-4 col-md-3 h-100 p-0 d-none d-md-flex" href="{{ path('home') }}">
+                <img src="{{ asset('build/img/logo.png') }}" alt="logo" class="mw-100 mh-100 m-auto">
+            </a>
+            <ul class="navbar-nav ml-auto mr-4 d-none d-md-flex">
+                <li class="nav-item d-flex">
+                    <a class="nav-link {% if current_menu is defined and current_menu == 'home' %}active{% endif %}" href="{{ path('home') }}">Home</a>
+                    <span class="nav-link text-dark"> | </span>
+                </li>
+                <li class="nav-item d-flex">
+                    <a class="nav-link" href="#">Tricks</a>
+                    <span class="nav-link text-dark"> | </span>
+                </li>
+                {% if not app.user %}
+                    <li class="nav-item d-flex">
+                        <a class="nav-link {% if current_menu is defined and current_menu == 'login' %}active{% endif %}" href="{{ path('app_login') }}">Sign in</a>
+                        <span class="nav-link text-dark"> | </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_menu is defined and current_menu == 'register' %}active{% endif %}" href="{{ path('user_registration') }}">Sign up</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{{ path('app_logout') }}" class="btn btn-danger">Log out</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <a class="navbar-nav d-block d-md-none text-center col-4 menu-icon" href="{{ path('home') }}"><i class="fas fa-home mx-auto nav-link {% if current_menu is defined and current_menu == 'home' %}active{% endif %}"></i></a>
+            <a class="navbar-nav d-block d-md-none text-center col-4 menu-icon" href="#"><i class="fas fa-bookmark mx-auto nav-link"></i></a>
+            {% if not app.user %}
+                <a class="navbar-nav d-block d-md-none text-center col-4 menu-icon" href="{{ path('user_registration') }}"><i class="fas fa-sign-in-alt mx-auto nav-link {% if current_menu is defined and current_menu == 'register' %}active{% endif %}"></i></a>
+            {% else %}
+                <a class="navbar-nav d-block d-md-none text-center col-4 menu-icon text-danger" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i></a>
+            {% endif %}
+        </nav>
+    </header>
+    <div class="mt-md-15">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success my-0">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('danger') %}
+            <div class="alert alert-danger my-0">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('warning') %}
+            <div class="alert alert-warning my-0">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-info my-0">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
