@@ -36,26 +36,4 @@
             {% endif %}
         </nav>
     </header>
-    <div class="mt-md-15">
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success my-0">
-                {{ message }}
-            </div>
-        {% endfor %}
-        {% for message in app.flashes('danger') %}
-            <div class="alert alert-danger my-0">
-                {{ message }}
-            </div>
-        {% endfor %}
-        {% for message in app.flashes('warning') %}
-            <div class="alert alert-warning my-0">
-                {{ message }}
-            </div>
-        {% endfor %}
-        {% for message in app.flashes('notice') %}
-            <div class="alert alert-info my-0">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
 {% endblock %}

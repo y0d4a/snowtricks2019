@@ -31,7 +31,11 @@ class RegistrationController extends Controller
             $entityManager->flush();
             // ... do any other work - like sending them an email, etc
             // maybe set a "flash" success message for the user
+            $this->addFlash('success', 'Enregistrement réussie');
             return $this->redirectToRoute('user_registration');
+        }
+        elseif ($form->isSubmitted() && $form->isValid() == false) {
+            $this->addFlash('danger', 'Les informations entrées sont incorrectes ou existent déjà !');
         }
         return $this->render(
             'registration/register.html.twig',

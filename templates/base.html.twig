@@ -15,7 +15,35 @@
     </head>
     <body class="d-flex flex-column h-100">
         {% include 'base/header.html.twig' %}
-        {% block body %}{% endblock %}
+        {% set appFlashes = app.flashes %}
+            <div class="{{ appFlashes|length > 0 ? 'flash-message-block' : '' }}">
+                {% if appFlashes.success is defined %}
+                    {% for message in appFlashes.success %}
+                        <div class="alert alert-success my-0 flash-message">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% elseif appFlashes.danger is defined %}
+                    {% for message in appFlashes.danger %}
+                        <div class="alert alert-danger my-0 flash-message">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% elseif appFlashes.warning is defined %}
+                    {% for message in appFlashes.warning %}
+                        <div class="alert alert-warning my-0 flash-message">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% elseif appFlashes.notice is defined %}
+                    {% for message in appFlashes.notice %}
+                        <div class="alert alert-info my-0 flash-message">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% block body %}{{ appFlashes }}{% endblock %}
         {% include 'base/footer.html.twig' %}
         {% block javascripts %}
             <script src="{{ asset('build/app.js') }}"></script>
