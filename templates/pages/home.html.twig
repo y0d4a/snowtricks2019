@@ -1,8 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-    <div class="w-100 mt-md-8 home-img">
+    <div class="w-100 {{ appFlashes|length > 0 ? 'mt--7' : 'mt-md-8' }} home-img">
         <div class="w-100 h-100 overflow-hidden text-center">
             <div class="position-relative h-100">
                 <img class="mt-md-8" src="{{ asset('build/img/homepage.jpg') }}" alt="Home Tricks" />
