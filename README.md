@@ -2,7 +2,7 @@
 
 It is the Sixth project of my studies.
 Project made with Symfony 4.3.
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/66b7d5e46f7b48e29b175e2d32108505)](https://www.codacy.com/app/MaxiKata/SnowTricks?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MaxiKata/SnowTricks&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a527b027b240434285d400dc6d655c19)](https://www.codacy.com/app/MaxiKata/snowtricks2019?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MaxiKata/snowtricks2019&amp;utm_campaign=Badge_Grade)
 ![OenClassRooms](https://img.shields.io/badge/OpenClassRooms-DA_PHP/SF-blue.svg)
 ![Project](https://img.shields.io/badge/Project-6-blue.svg)
 ![PHP](https://img.shields.io/badge/Symfony-4.3-blue.svg) 
