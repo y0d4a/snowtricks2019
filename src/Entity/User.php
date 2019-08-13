@@ -3,6 +3,8 @@
 // src/Entity/User.php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -60,9 +62,21 @@ class User implements UserInterface
      */
     protected $resetToken;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Tricks", mappedBy="Author")
+     */
+    private $tricksAuthor;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Tricks", mappedBy="Editor")
+     */
+    private $tricksEditor;
+
     public function __construct()
     {
         $this->roles = array('ROLE_USER');
+        $this->tricksAuthor = new ArrayCollection();
+        $this->tricksEditor = new ArrayCollection();
     }
 
     // other properties and methods
@@ -136,5 +150,67 @@ class User implements UserInterface
 
     public function eraseCredentials()
     {
+    }
+
+    /**
+     * @return Collection|Tricks[]
+     */
+    public function getTricksAuthor(): Collection
+    {
+        return $this->tricksAuthor;
+    }
+
+    public function addTricksAuthor(Tricks $tricksAuthor): self
+    {
+        if (!$this->tricksAuthor->contains($tricksAuthor)) {
+            $this->tricksAuthor[] = $tricksAuthor;
+            $tricksAuthor->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTricksAuthor(Tricks $tricksAuthor): self
+    {
+        if ($this->tricksAuthor->contains($tricksAuthor)) {
+            $this->tricksAuthor->removeElement($tricksAuthor);
+            // set the owning side to null (unless already changed)
+            if ($tricksAuthor->getAuthor() === $this) {
+                $tricksAuthor->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tricks[]
+     */
+    public function getTricksEditor(): Collection
+    {
+        return $this->tricksEditor;
+    }
+
+    public function addTricksEditor(Tricks $tricksEditor): self
+    {
+        if (!$this->tricksEditor->contains($tricksEditor)) {
+            $this->tricksEditor[] = $tricksEditor;
+            $tricksEditor->setEditor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTricksEditor(Tricks $tricksEditor): self
+    {
+        if ($this->tricksEditor->contains($tricksEditor)) {
+            $this->tricksEditor->removeElement($tricksEditor);
+            // set the owning side to null (unless already changed)
+            if ($tricksEditor->getEditor() === $this) {
+                $tricksEditor->setEditor(null);
+            }
+        }
+
+        return $this;
     }
 }
