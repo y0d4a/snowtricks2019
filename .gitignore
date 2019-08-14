@@ -27,3 +27,9 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 .DS_Store
+.idea/workspace.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/snowtricks2019.iml
+.idea/vcs.xml
+.idea/workspace.xml

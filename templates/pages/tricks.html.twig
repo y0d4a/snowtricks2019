@@ -1,0 +1,6 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="text-center {{ appFlashes|length > 0 ? 'mt-5' : 'mt-md-15' }} mb-5 d-none d-md-block">Tricks</h1>
+    <a href="{{ path('tricks.new') }}" class="btn btn-primary">Créer un Tricks</a>
+{% endblock %}
