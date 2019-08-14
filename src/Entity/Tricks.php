@@ -58,6 +58,10 @@ class Tricks
      */
     private $Editor;
 
+    public function __construct()
+    {
+        $this->dateUpdate = new \DateTime('now');
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -116,7 +120,7 @@ class Tricks
         return $this->dateUpdate;
     }
 
-    public function setDateUpdate(string $dateUpdate): self
+    public function setDateUpdate(\DateTimeInterface $dateUpdate): self
     {
         $this->dateUpdate = $dateUpdate;
 

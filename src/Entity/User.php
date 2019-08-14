@@ -78,8 +78,15 @@ class User implements UserInterface
         $this->tricksAuthor = new ArrayCollection();
         $this->tricksEditor = new ArrayCollection();
     }
-
+    public function __toString()
+    {
+        return $this->getUsername();
+    }
     // other properties and methods
+    public function getId()
+    {
+        return $this->id;
+    }
     public function getEmail()
     {
         return $this->email;
