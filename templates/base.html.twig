@@ -13,7 +13,7 @@
                  <link rel="stylesheet" href="/build/app.css"> -->
         {% endblock %}
     </head>
-    <body class="d-flex flex-column h-100">
+    <body class="d-flex flex-column">
         {% include 'base/header.html.twig' %}
         {% set appFlashes = app.flashes %}
             <div class="{{ appFlashes|length > 0 ? 'flash-message-block' : '' }}">
