@@ -1,5 +1,6 @@
 body {
     background-color: lightgray;
+    min-height: 100%;
 }
 nav {
     height: 8vh;
@@ -26,6 +27,14 @@ input:-webkit-autofill {
     -webkit-animation-name: autofill;
     -webkit-animation-fill-mode: both;
 }
+#trick-description{
+    white-space: pre-wrap;
+    margin: 2rem 5rem;
+    text-align: justify;
+}
+#buttons{
+    display: none;
+}
 .btn:focus{
     box-shadow: 0 0 0 0;
 }
@@ -42,6 +51,15 @@ input:-webkit-autofill {
     margin-right: auto;
     left: 0;
     right: 0;
+}
+.col-20{
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%;
 }
 .mt-8{
     margin-top: 8vh;
@@ -104,6 +122,15 @@ input:-webkit-autofill {
 }
 .trick-title{
     text-decoration: underline;
+}
+.modal-header .close {
+    padding: 1rem 1rem 1rem 0.5rem;
+    margin: -1rem -1rem -1rem 0;
+}
+@media (min-width: 576px){
+    .modal-dialog{
+        max-width: 75%;
+    }
 }
 @media (min-width: 768px){
     nav{

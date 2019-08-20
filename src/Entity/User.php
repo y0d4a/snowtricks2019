@@ -130,7 +130,7 @@ class User implements UserInterface
     /**
      * @return string
      */
-    public function getResetToken(): string
+    public function getResetToken()
     {
         return $this->resetToken;
     }

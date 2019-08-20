@@ -1,0 +1,41 @@
+<div class="modal fade" id="trickModal" tabindex="-1" role="dialog" aria-labelledby="trickTitle" aria-hidden="true" {% if app.user.id is defined %} data-user="{{ app.user.id }}" {% endif %}>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="trick-title"></h5>
+                <div class="ml-auto" id="buttons">
+                    <a href="#" class="px-2"><i class="fas fa-pen"></i></a>
+                    <a href="#" class="px-2"><i class="fas fa-trash-alt"></i></a>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="trick-description"></p>
+                <table class="table border border-dark">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Publié par</th>
+                        <th scope="col">Publié le</th>
+                        <th scope="col">Édité le</th>
+                        <th scope="col">Catégorie</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td id="trick-author"></td>
+                        <td id="trick-date-post"></td>
+                        <td id="trick-date-update"></td>
+                        <td id="trick-category"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
