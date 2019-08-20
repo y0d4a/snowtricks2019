@@ -30,16 +30,18 @@ class TricksController extends AbstractController
     }
     /**
      * @Route("/tricks", name="tricks")
-     * @return Response
      */
-    public function index():Response
+    public function index()
     {
-        return $this->render('pages/tricks.html.twig', array('current_menu' => 'tricks'));
+        $tricks = $this->repository->findBy(
+            ['statut' => ['Publié', 'Edité']],
+            ['dateUpdate' => 'DESC']
+        );
+        return $this->render('pages/tricks.html.twig', array('tricks' => $tricks, 'current_menu' => 'tricks'));
     }
 
     /**
      * @Route("/tricks/new", name="tricks.new")
-     * @return Response
      */
     public function tricksNew(Request $request)
     {
@@ -65,4 +67,6 @@ class TricksController extends AbstractController
             'form' => $form->createView()
         ));
     }
+
+
 }
