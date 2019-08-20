@@ -102,6 +102,9 @@ input:-webkit-autofill {
     left: 50%;
     transform: translate(-10%,0%);
 }
+.trick-title{
+    text-decoration: underline;
+}
 @media (min-width: 768px){
     nav{
         bottom: auto;

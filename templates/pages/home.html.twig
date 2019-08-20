@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="collapse container-fluid" id="trickList">
-        <ul class="row text-center px-0 list-unstyled">
+        <!--<ul class="row text-center px-0 list-unstyled">
             <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
             <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
             <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
@@ -27,7 +27,22 @@
             <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
             <li class="col-11 col-md-2 border ml-auto mr-auto ml-md-3 my-3">Gros Cono</li>
 
-        </ul>
+        </ul>-->
+        <div class="row">
+            {% for trick in tricks %}
+                <div class="col-2 my-3 d-flex">
+                    <div class="w-100 p-2 row">
+                        <div class="col-12 p-2 d-flex border border-dark">
+                            <a href="#" class="trick-title mr-auto">{{ trick.title }}</a>
+                            {% if app.user.id is defined and app.user.id == trick.author.id %}
+                                <a href="#" class="px-2"><i class="fas fa-pen"></i></a>
+                                <a href="#" class="px-2"><i class="fas fa-trash-alt"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
 {% endblock %}

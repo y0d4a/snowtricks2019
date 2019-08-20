@@ -22,7 +22,8 @@
                         <a class="nav-link {% if current_menu is defined and current_menu == 'register' %}active{% endif %}" href="{{ path('user_registration') }}">Sign up</a>
                     </li>
                 {% else %}
-                    <li class="nav-item">
+                    <li class="nav-item d-flex">
+                        <div class="my-auto px-3">Bienvenue <span class="font-weight-bold">{{ app.user.username }}</span></div>
                         <a href="{{ path('app_logout') }}" class="btn btn-danger">Log out</a>
                     </li>
                 {% endif %}
