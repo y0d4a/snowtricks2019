@@ -1,40 +1,47 @@
-<div class="modal fade" id="trickModal" tabindex="-1" role="dialog" aria-labelledby="trickTitle" aria-hidden="true" {% if app.user.id is defined %} data-user="{{ app.user.id }}" {% endif %}>
+<div class="modal fade" id="trick-{{ trick.id }}" tabindex="-1" role="dialog" aria-labelledby="trickTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="trick-title"></h5>
-                <div class="ml-auto" id="buttons">
-                    <a href="#" class="px-2"><i class="fas fa-pen"></i></a>
-                    <a href="#" class="px-2"><i class="fas fa-trash-alt"></i></a>
-                </div>
+                <h5 class="modal-title">{{ trick.title }}</h5>
+                {% if app.user.id is defined and app.user.id == trick.author.id %}
+                    <div class="ml-auto">
+                        <a href="edit-{{ trick.id }}" class="px-2" data-toggle="modal" data-target="#trick-edit-{{ trick.id }}" data-dismiss="modal"><i class="fas fa-pen"></i></a>
+                        <a href="#" class="px-2"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                {% endif %}
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p id="trick-description"></p>
+                <p class="trick-description">{{ trick.description }}</p>
                 <table class="table border border-dark">
                     <thead class="thead-dark">
                     <tr>
                         <th scope="col">Publié par</th>
                         <th scope="col">Publié le</th>
-                        <th scope="col">Édité le</th>
+                        {% if not trick.datePost == trick.dateUpdate %}
+                            <th scope="col">Édité le</th>
+                            <th scope="col">Édité par</th>
+                        {% endif %}
                         <th scope="col">Catégorie</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td id="trick-author"></td>
-                        <td id="trick-date-post"></td>
-                        <td id="trick-date-update"></td>
-                        <td id="trick-category"></td>
+                        <td>{{  trick.author.username }}</td>
+                        <td>{{ trick.datePost|date("d/m/Y", "Europe/Paris") }}</td>
+                        {% if not trick.datePost == trick.dateUpdate %}
+                            <td>{{ trick.dateUpdate|date("d/m/Y", "Europe/Paris") }}</td>
+                            <td>{{ trick.Editor }}</td>
+                        {% endif %}
+                        <td>{{ trick.category }}</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
