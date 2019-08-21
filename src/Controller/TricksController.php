@@ -7,13 +7,9 @@ use App\Form\TricksType;
 use App\Repository\TricksRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
+
 
 class TricksController extends AbstractController
 {
@@ -35,36 +31,32 @@ class TricksController extends AbstractController
     /**
      * @Route("/tricks", name="tricks")
      */
-    public function index()
+    public function index(Request $request)
     {
         $tricks = $this->repository->findBy(
             ['statut' => ['Publié', 'Edité']],
             ['dateUpdate' => 'DESC']
         );
-        return $this->render('pages/tricks.html.twig', array('tricks' => $tricks, 'current_menu' => 'tricks'));
-    }
 
-    /**
-     * @Route("/trick/{id}", name="trick")
-     */
-    public function trick($id)
-    {
-        $trick = $this->repository->findOneBy(
-            ['id' => $id ]
-        );
+        foreach ($tricks as $trick){
+            $form = $this->createForm(TricksType::class, $trick, [
+                'action' => $this->generateUrl('trick.edit', ['id' => $trick->getId()])
+            ]);
+            $forms[] = $form->createView();
+        }
 
-        $encoder = [new JsonEncoder()];
-        $normalizer = [new ObjectNormalizer()];
-
-        $serializer = new Serializer($normalizer,$encoder);
-
-        $response = $serializer->serialize($trick, 'json', [
-            'circular_reference_handler' => function ($object) {
-                return $object->getId();
-            }
+        $newTrick = new Tricks();
+        $formNew = $this->createForm(TricksType::class, $newTrick, [
+            'action' => $this->generateUrl('tricks.new')
         ]);
 
-        return new Response($response, 200, ['Content-Type' => 'application/json']);
+        return $this->render('pages/tricks.html.twig', array(
+            'tricks' => $tricks,
+            'current_menu' => 'tricks',
+            'newTrick' => $newTrick,
+            'formNew' => $formNew->createView(),
+            'formEdit' => $forms
+            ));
     }
 
     /**
@@ -74,25 +66,46 @@ class TricksController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $tricks = new Tricks();
-        $tricks->setDatePost(new \DateTime('now'));
-        $tricks->setAuthor($this->getUser());
-        $tricks->setEditor($this->getUser());
+        $trick = new Tricks();
+        $trick->setDatePost(new \DateTime('now'));
+        $trick->setAuthor($this->getUser());
+        $trick->setEditor($this->getUser());
 
-        $form = $this->createForm(TricksType::class, $tricks);
+        $form = $this->createForm(TricksType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($tricks);
+            $this->em->persist($trick);
             $this->em->flush();
             return $this->redirectToRoute('tricks');
         }
 
-        return $this->render('pages/tricksNew.html.twig', array(
+        return $this->render('pages/tricks.html.twig', array(
             'current_menu' => 'tricks',
-            'tricks' => $tricks,
+            'tricks' => $trick,
             'form' => $form->createView()
         ));
+    }
+
+    /**
+     * @Route("/tricks/edit/{id}", name="trick.edit")
+     * @param Tricks $trick
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function trickEdit(Tricks $trick, Request $request)
+    {
+        $form = $this->createForm(TricksType::class, $trick);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($trick);
+            $this->em->flush();
+            return $this->redirectToRoute('tricks');
+        }
+
+
+
     }
 
 

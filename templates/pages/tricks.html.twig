@@ -3,25 +3,28 @@
 {% block body %}
     <h1 class="text-center {{ appFlashes|length > 0 ? 'mt-5' : 'mt-md-15' }} mb-5 d-none d-md-block">Tricks</h1>
     {% if app.user.id is defined %}
-        <a href="{{ path('tricks.new') }}" class="btn btn-primary w-25 mx-auto">Créer un Tricks</a>
+        <button type="button" data-toggle="modal" data-target="#Modal-New" class="btn btn-primary w-25 mx-auto">Créer un Tricks</button>
     {% endif %}
     <div class="container-fluid">
         <div class="row">
-            {% for trick in tricks %}
+            {% for key,trick in tricks %}
                 <div class="col-20 my-3 d-flex">
                     <div class="w-100 mx-auto p-2 row">
                         <div class="col-12 p-2 d-flex border border-dark">
-                            <a href="#" class="trick-title mr-auto" data-toggle="modal" data-target="#trickModal" data-whatever="{{ trick.id }}">{{ trick.title }}</a>
+                            <a href="{{ trick.id }}" class="trick-title mr-auto" data-toggle="modal" data-target="#trick-{{ trick.id }}">{{ trick.title }}</a>
                             {% if app.user.id is defined and app.user.id == trick.author.id %}
-                                <a href="#" class="px-2"><i class="fas fa-pen"></i></a>
+                                <a href="edit-{{ trick.id }}" class="px-2" data-toggle="modal" data-target="#trick-edit-{{ trick.id }}"><i class="fas fa-pen"></i></a>
                                 <a href="#" class="px-2"><i class="fas fa-trash-alt"></i></a>
                             {% endif %}
                         </div>
                     </div>
                 </div>
+                {% include 'Modales/trickView.html.twig' %}
+                {% include 'Modales/trickEdit.html.twig' with {'form':formEdit[key]} %}
+                {% include 'Modales/trickNew.html.twig' %}
             {% endfor %}
         </div>
     </div>
 
-    {% include 'Modales/trickView.html.twig' %}
+
 {% endblock %}
