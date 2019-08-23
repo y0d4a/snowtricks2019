@@ -38,6 +38,11 @@ class Comment
      */
     private $authorId;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $editedAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +92,18 @@ class Comment
     public function setAuthorId(?user $authorId): self
     {
         $this->authorId = $authorId;
+
+        return $this;
+    }
+
+    public function getEditedAt(): ?\DateTimeInterface
+    {
+        return $this->editedAt;
+    }
+
+    public function setEditedAt(\DateTimeInterface $editedAt): self
+    {
+        $this->editedAt = $editedAt;
 
         return $this;
     }
