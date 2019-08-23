@@ -68,6 +68,7 @@ class TricksController extends AbstractController
 
         $trick = new Tricks();
         $trick->setDatePost(new \DateTime('now'));
+        $trick->setDateUpdate(new \DateTime('now'));
         $trick->setAuthor($this->getUser());
         $trick->setEditor($this->getUser());
 
@@ -77,6 +78,7 @@ class TricksController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($trick);
             $this->em->flush();
+            $this->addFlash('success', 'Ajouté avec succès');
             return $this->redirectToRoute('tricks');
         }
 
@@ -88,25 +90,41 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/edit/{id}", name="trick.edit")
+     * @Route("/tricks/edit/{id}", name="trick.edit", methods="GET|POST")
      * @param Tricks $trick
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Exception
      */
     public function trickEdit(Tricks $trick, Request $request)
     {
+        $trick->setDateUpdate(new \DateTime('now'));
+        $trick->setEditor($this->getUser());
+
         $form = $this->createForm(TricksType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($trick);
             $this->em->flush();
+            $this->addFlash('success', 'Edité avec succès');
             return $this->redirectToRoute('tricks');
         }
-
-
-
     }
 
+    /**
+     * @Route("/tricks/edit/{id}", name="trick.delete", methods="DELETE")
+     * @param Tricks $trick
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function delete(Tricks $trick, Request $request)
+    {
+        if ($this->getUser() == $trick->getAuthor() && $this->isCsrfTokenValid('delete' . $trick->getId(), $request->get('_token'))){
+            $this->em->remove($trick);
+            $this->em->flush();
+            $this->addFlash('success', 'Supprimé avec succès');
+            return $this->redirectToRoute('tricks');
+        }
+    }
 
 }

@@ -4,9 +4,13 @@
             <div class="modal-header">
                 <h5 class="modal-title">{{ trick.title }}</h5>
                 {% if app.user.id is defined and app.user.id == trick.author.id %}
-                    <div class="ml-auto">
+                    <div class="ml-auto d-flex">
                         <a href="edit-{{ trick.id }}" class="px-2" data-toggle="modal" data-target="#trick-edit-{{ trick.id }}" data-dismiss="modal"><i class="fas fa-pen"></i></a>
-                        <a href="#" class="px-2"><i class="fas fa-trash-alt"></i></a>
+                        <form method="post" action="{{ path('trick.delete', {id: trick.id}) }}">
+                            <input type="hidden" name="_method" value="delete">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
+                            <button class="py-0 px-2 btn btn-link text-dark"><i class="fas fa-trash-alt"></i></button>
+                        </form>
                     </div>
                 {% endif %}
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -20,8 +24,10 @@
                     <tr>
                         <th scope="col">Publié par</th>
                         <th scope="col">Publié le</th>
-                        {% if not trick.datePost == trick.dateUpdate %}
+                        {% if trick.datePost != trick.dateUpdate %}
                             <th scope="col">Édité le</th>
+                        {% endif %}
+                        {% if app.user.id is defined and app.user.id != trick.author.id %}
                             <th scope="col">Édité par</th>
                         {% endif %}
                         <th scope="col">Catégorie</th>
@@ -31,8 +37,10 @@
                     <tr>
                         <td>{{  trick.author.username }}</td>
                         <td>{{ trick.datePost|date("d/m/Y", "Europe/Paris") }}</td>
-                        {% if not trick.datePost == trick.dateUpdate %}
+                        {% if trick.datePost != trick.dateUpdate %}
                             <td>{{ trick.dateUpdate|date("d/m/Y", "Europe/Paris") }}</td>
+                        {% endif %}
+                        {% if app.user.id is defined and app.user.id != trick.author.id %}
                             <td>{{ trick.Editor }}</td>
                         {% endif %}
                         <td>{{ trick.category }}</td>
