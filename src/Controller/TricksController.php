@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Tricks;
+use App\Form\CommentType;
 use App\Form\TricksType;
 use App\Repository\TricksRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -43,8 +45,17 @@ class TricksController extends AbstractController
                 'action' => $this->generateUrl('trick.edit', ['id' => $trick->getId()])
             ]);
             $forms[] = $form->createView();
+
+            /* comment form */
+            $newComment = new Comment();
+            $formNewComment = $this->createForm(CommentType::class, $newComment, [
+                'action' => $this->generateUrl('comment.new', ['id' => $trick->getId()])
+            ]);
+            $formsNewComment[$trick->getId()] = $formNewComment->createView();
+
         }
 
+        /* trick form */
         $newTrick = new Tricks();
         $formNew = $this->createForm(TricksType::class, $newTrick, [
             'action' => $this->generateUrl('tricks.new')
@@ -55,7 +66,8 @@ class TricksController extends AbstractController
             'current_menu' => 'tricks',
             'newTrick' => $newTrick,
             'formNew' => $formNew->createView(),
-            'formEdit' => $forms
+            'formEdit' => $forms,
+            'formsNewComment' => $formsNewComment
             ));
     }
 

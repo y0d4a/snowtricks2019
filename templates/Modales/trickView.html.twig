@@ -47,6 +47,10 @@
                     </tr>
                     </tbody>
                 </table>
+                {{ form_start(formsNewComment[trick.id]) }}
+                    {{ form_rest(formsNewComment[trick.id]) }}
+                    <button class="btn btn-success">Envoyer</button>
+                {{ form_end(formsNewComment[trick.id]) }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
