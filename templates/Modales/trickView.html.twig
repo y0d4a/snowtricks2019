@@ -51,6 +51,15 @@
                     {{ form_rest(formsNewComment[trick.id]) }}
                     <button class="btn btn-success">Envoyer</button>
                 {{ form_end(formsNewComment[trick.id]) }}
+
+                {% for comment in comments[trick.id] %}
+                    {% for c in comment %}
+                        {% if c.body is not empty %}
+                            {{ c.body }}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

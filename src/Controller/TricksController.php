@@ -35,6 +35,8 @@ class TricksController extends AbstractController
      */
     public function index(Request $request)
     {
+        $comments = array();
+
         $tricks = $this->repository->findBy(
             ['statut' => ['Publié', 'Edité']],
             ['dateUpdate' => 'DESC']
@@ -53,6 +55,10 @@ class TricksController extends AbstractController
             ]);
             $formsNewComment[$trick->getId()] = $formNewComment->createView();
 
+            /* Comment view */
+            $comments[$trick->getId()][] = $this->em->getRepository(Comment::class)->findBy(
+                ['tricksId' => $trick->getId()]
+            );
         }
 
         /* trick form */
@@ -67,7 +73,8 @@ class TricksController extends AbstractController
             'newTrick' => $newTrick,
             'formNew' => $formNew->createView(),
             'formEdit' => $forms,
-            'formsNewComment' => $formsNewComment
+            'formsNewComment' => $formsNewComment,
+            'comments' => $comments
             ));
     }
 
