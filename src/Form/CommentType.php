@@ -12,7 +12,7 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('body')
+            ->add('body', null, ['label' => 'Laissé votre commentaire'])
         ;
     }
 

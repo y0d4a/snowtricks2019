@@ -47,18 +47,32 @@
                     </tr>
                     </tbody>
                 </table>
-                {{ form_start(formsNewComment[trick.id]) }}
-                    {{ form_rest(formsNewComment[trick.id]) }}
-                    <button class="btn btn-success">Envoyer</button>
-                {{ form_end(formsNewComment[trick.id]) }}
+                {% if app.user.id is defined %}
+                    {{ form_start(formsNewComment[trick.id]) }}
+                        {{ form_rest(formsNewComment[trick.id]) }}
+                        <button class="btn btn-success">Envoyer</button>
+                    {{ form_end(formsNewComment[trick.id]) }}
+                {% endif %}
 
-                {% for comment in comments[trick.id] %}
-                    {% for c in comment %}
-                        {% if c.body is not empty %}
-                            {{ c.body }}
-                        {% endif %}
-                    {% endfor %}
-                {% endfor %}
+
+                <div class="container">
+                    <div class="row px-0- mx-0">
+                        {% for comment in comments[trick.id] %}
+                            {% for c in comment %}
+                                {% if c.body is not empty %}
+                                    <div class="col-7 py-3 my-2 mx-auto border border-dark">
+                                        <div class="d-flex">
+                                            <h2 class="h5 mr-auto"> Rédigé par {{ c.authorId.username }}</h2>
+                                            <p>Publié le {{ c.publishedat|date("d/m/Y", "Europe/Paris") }}</p>
+                                        </div>
+                                        {{ c.body }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+
 
             </div>
             <div class="modal-footer">

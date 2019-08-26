@@ -9,7 +9,13 @@
             </div>
             <div class="modal-body">
                 {{ form_start(formNew) }}
-                {{ form_rest(formNew) }}
+                {% if app.request.get('tricks') is not empty %}
+                    {{ form_row(formNew.title) }}
+                    {{ form_row(formNew.description, {'value':app.request.get('tricks')['description']}) }}
+                    {{ form_row(formNew.category) }}
+                {% else %}
+                    {{ form_rest(formNew) }}
+                {% endif %}
             </div>
             <div class="modal-footer">
                 <button class="btn btn-success">Poster</button>

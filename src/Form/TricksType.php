@@ -5,8 +5,6 @@ namespace App\Form;
 use App\Entity\Tricks;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,14 +15,15 @@ class TricksType extends AbstractType
         $builder
             ->add('title', null, ['label' => 'Nom du Tricks'])
             ->add('description', null, ['label' => 'Description du Tricks'])
-            ->add('category', null, ['label' => 'Catégorie du Tricks'])
-            ->add('statut', ChoiceType::class, [
+            ->add('category', ChoiceType::class, [
                 'choices' => [
-                    'Choisissez le statut' => [
-                        'Publié' => 'Publié',
-                        'Brouillon' => 'Brouillon'
-                    ],
-                ],
+                    'Choisissez la catégorie' => [
+                        'Catégorie 1' => 'Catégorie 1',
+                        'Catégorie 2' => 'Catégorie 2',
+                        'Catégorie 3' => 'Catégorie 3',
+                        'Catégorie 4' => 'Catégorie 4'
+                    ]
+                ]
             ])
         ;
     }

@@ -17,48 +17,47 @@
                 <div class="modal-body">
                     {{ form_start(form) }}
                     <div class="d-block mx-auto my-2 w-50">{{ form_row(form.title) }}</div>
-                    <div id="trick-description">{{ form_row(form.description) }}</div>
+                    <div id="trick-description">{% if app.request.get('tricks') is not empty %}{{ form_row(form.description, {'value':app.request.get('tricks')['description']}) }}{% else %}{{ form_row(form.description) }}{% endif %}</div>
                     <table class="table border border-dark">
                         <thead class="thead-dark">
                         <tr class="row mx-0">
-                            <th class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-2{% elseif trick.datePost != trick.dateUpdate %}col-20{% else %}col-3{% endif %}" scope="col">Publié par</th>
-                            <th class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-2{% elseif trick.datePost != trick.dateUpdate %}col-20{% else %}col-3{% endif %}" scope="col">Publié le</th>
+                            <th class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-20{% elseif trick.datePost != trick.dateUpdate %}col-3{% else %}col-4{% endif %}" scope="col">Publié par</th>
+                            <th class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-20{% elseif trick.datePost != trick.dateUpdate %}col-3{% else %}col-4{% endif %}" scope="col">Publié le</th>
                             {% if trick.datePost != trick.dateUpdate %}
-                                <th class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-2{% else%}col-20{% endif %}" scope="col">Édité le</th>
+                                <th class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-20{% else%}col-3{% endif %}" scope="col">Édité le</th>
                             {% endif %}
                             {% if app.user.id is defined and app.user.id != trick.author.id %}
-                                <th class="col-2" scope="col">Édité par</th>
+                                <th class="col-20" scope="col">Édité par</th>
                             {% endif %}
-                            <th class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-2{% elseif trick.datePost != trick.dateUpdate %}col-20{% else %}col-3{% endif %}" scope="col">Catégorie</th>
-                            <th class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-2{% elseif trick.datePost != trick.dateUpdate %}col-20{% else %}col-3{% endif %}" scope="col">Statut</th>
+                            <th class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-20{% elseif trick.datePost != trick.dateUpdate %}col-3{% else %}col-4{% endif %}" scope="col">Catégorie</th>
+                            <!--<th class="{#{% if app.user.id is defined and app.user.id != trick.author.id %}col-2{% elseif trick.datePost != trick.dateUpdate %}col-20{% else %}col-3{% endif %}#}" scope="col">Statut</th>-->
                         </tr>
                         </thead>
                         <tbody>
                         <tr class="row mx-auto">
-                            <td class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-2{% elseif trick.datePost != trick.dateUpdate %}col-20{% else %}col-3{% endif %}">{{  trick.author.username }}</td>
-                            <td class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-2{% elseif trick.datePost != trick.dateUpdate %}col-20{% else %}col-3{% endif %}">{{ trick.datePost|date("d/m/Y", "Europe/Paris") }}</td>
+                            <td class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-20{% elseif trick.datePost != trick.dateUpdate %}col-3{% else %}col-4{% endif %}">{{  trick.author.username }}</td>
+                            <td class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-20{% elseif trick.datePost != trick.dateUpdate %}col-3{% else %}col-4{% endif %}">{{ trick.datePost|date("d/m/Y", "Europe/Paris") }}</td>
                             {% if trick.datePost != trick.dateUpdate %}
-                                <td class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-2{% else %}col-20{% endif %}">{{ trick.dateUpdate|date("d/m/Y", "Europe/Paris") }}</td>
+                                <td class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-20{% else %}col-3{% endif %}">{{ trick.dateUpdate|date("d/m/Y", "Europe/Paris") }}</td>
                             {% endif %}
                             {% if app.user.id is defined and app.user.id != trick.author.id %}
-                                <td class="col-2">{{ trick.Editor }}</td>
+                                <td class="col-20">{{ trick.Editor }}</td>
                             {% endif %}
-                            <td class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-2{% elseif trick.datePost != trick.dateUpdate %}col-20{% else %}col-3{% endif %}">{{ form_widget(form.category) }}</td>
-                            <td class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-2{% elseif trick.datePost != trick.dateUpdate %}col-20{% else %}col-3{% endif %}">{{ form_widget(form.statut) }}</td>
+                            <td class="{% if app.user.id is defined and app.user.id != trick.author.id %}col-20{% elseif trick.datePost != trick.dateUpdate %}col-3{% else %}col-4{% endif %}">{{ form_widget(form.category) }}</td>
+                            <!--<td class="{#{% if app.user.id is defined and app.user.id != trick.author.id %}col-2{% elseif trick.datePost != trick.dateUpdate %}col-20{% else %}col-3{% endif %}">{{ form_widget(form.statut) }}#}</td>-->
                         </tr>
                         </tbody>
                     </table>
-
                 </div>
                 <div class="modal-footer">
+                    <button class="btn btn-primary">Save changes</button>
+                    {{ form_end(form) }}
                     <form method="post" action="{{ path('trick.delete', {id: trick.id}) }}">
                         <input type="hidden" name="_method" value="delete">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
                         <button class="btn btn-danger">Delete</button>
                     </form>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button class="btn btn-primary">Save changes</button>
-                    {{ form_end(form) }}
                 </div>
             </div>
         </div>
