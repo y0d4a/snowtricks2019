@@ -16,7 +16,7 @@
     </div>
     <div class="collapse container-fluid" id="trickList">
         <div class="row">
-            {% for trick in tricks %}
+            {% for key,trick in tricks %}
                 <div class="col-20 my-3 d-flex">
                     <div class="w-100 mx-auto p-2 row">
                         <div class="col-12 p-2 d-flex border border-dark">
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 {% include 'Modales/trickView.html.twig' %}
-                {% include 'Modales/trickEdit.html.twig' %}
+                {% include 'Modales/trickEdit.html.twig' with {'form':formEdit[key]} %}
             {% endfor %}
         </div>
     </div>
