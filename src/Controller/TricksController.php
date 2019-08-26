@@ -90,15 +90,23 @@ class TricksController extends AbstractController
         $trick->setDateUpdate(new \DateTime('now'));
         $trick->setAuthor($this->getUser());
         $trick->setEditor($this->getUser());
+        $trick->setStatut('Publié');
 
         $form = $this->createForm(TricksType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($trick);
-            $this->em->flush();
-            $this->addFlash('success', 'Ajouté avec succès');
-            return $this->redirectToRoute('tricks');
+            $check = $this->checkTrick($trick);
+
+            if($check == true){
+                $this->em->persist($trick);
+                $this->em->flush();
+                $this->addFlash('success', 'Ajouté avec succès');
+                return $this->redirectToRoute('tricks');
+            }
+            $this->addFlash('danger', 'Ce nom de trick existe déjà');
+
+            return $this->redirectToRoute('tricks', ['request' => $request], 307);
         }
 
         return $this->render('pages/tricks.html.twig', array(
@@ -119,15 +127,23 @@ class TricksController extends AbstractController
     {
         $trick->setDateUpdate(new \DateTime('now'));
         $trick->setEditor($this->getUser());
+        $trick->setStatut('Edité');
 
         $form = $this->createForm(TricksType::class, $trick);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($trick);
-            $this->em->flush();
-            $this->addFlash('success', 'Edité avec succès');
-            return $this->redirectToRoute('tricks');
+            $check = $this->checkTrick($trick);
+
+            if($check == true){
+                $this->em->persist($trick);
+                $this->em->flush();
+                $this->addFlash('success', 'Edité avec succès');
+                return $this->redirectToRoute('tricks');
+            }
+            $this->addFlash('danger', 'Ce nom de trick existe déjà');
+            return $this->redirectToRoute('tricks', ['request' => $form], 307);
         }
     }
 
@@ -144,6 +160,20 @@ class TricksController extends AbstractController
             $this->addFlash('success', 'Supprimé avec succès');
             return $this->redirectToRoute('tricks');
         }
+    }
+
+    private function checkTrick($trick)
+    {
+        $check = $this->repository->findOneBy(['title' => $trick->getTitle()]);
+        if(empty($check)){
+            $result = true;
+        } elseif(!empty($trick->getId()) && $trick->getId() == $check->getId()){
+            $result = true;
+        } else {
+            $result = false;
+        }
+
+        return $result;
     }
 
 }
