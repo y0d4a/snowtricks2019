@@ -5,7 +5,9 @@ namespace App\Controller;
 
 
 use App\Entity\Comment;
+use App\Entity\Image;
 use App\Form\CommentType;
+use App\Form\ImageType;
 use App\Form\TricksType;
 use App\Repository\TricksRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -60,6 +62,13 @@ class HomeController extends AbstractController
             $comments[$trick->getId()][] = $this->em->getRepository(Comment::class)->findBy(
                 ['tricksId' => $trick->getId()]
             );
+
+            /* Image form */
+            $newImage = new Image();
+            $formImage = $this->createForm(ImageType::class, $newImage, [
+                'action' => $this->generateUrl('image.new', ['id' => $trick->getId()])
+            ]);
+            $formsImage[$trick->getId()] = $formImage->createView();
         }
 
         return $this->render('pages/home.html.twig', array(
@@ -67,7 +76,8 @@ class HomeController extends AbstractController
             'current_menu' => 'home',
             'formEdit' => $forms,
             'formsNewComment' => $formsNewComment,
-            'comments' => $comments
+            'comments' => $comments,
+            'formImage' => $formsImage
         ));
     }
 }
