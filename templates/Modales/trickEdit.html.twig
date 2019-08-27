@@ -15,6 +15,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    {{ form_start(formImage[trick.id]) }}
+                        {{ form_rest(formImage[trick.id]) }}
+                    <button class="btn btn-primary">Upload image</button>
+                    {{ form_end(formImage[trick.id]) }}
+
                     {{ form_start(form) }}
                     <div class="d-block mx-auto my-2 w-50">{{ form_row(form.title) }}</div>
                     <div id="trick-description">{% if app.request.get('tricks') is not empty %}{{ form_row(form.description, {'value':app.request.get('tricks')['description']}) }}{% else %}{{ form_row(form.description) }}{% endif %}</div>

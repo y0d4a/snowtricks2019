@@ -21,6 +21,18 @@ require("bootstrap");
 
 $(document).ready(function() {
     $("[data-toggle='popover']").popover();
+
+    var input = document.getElementById("image_name");
+    var placeholder = $(".custom-file-label");
+
+    input.addEventListener(
+        "change",
+        function ()
+        {
+            var value = input.value.replace('C:\\fakepath\\', '').trim();
+            placeholder.html(value);
+        }
+    );
 });
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
