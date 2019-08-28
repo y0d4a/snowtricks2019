@@ -1,0 +1,37 @@
+<div class="row">
+    {% for key,trick in tricks %}
+        <div class="col-20 my-3 d-flex">
+            <div class="w-100 mx-auto p-2 row border border-dark">
+                <div class="col-12 p-0 container-trick">
+                    {% for image in images[trick.id] if image is not empty %}
+                        {% for image in images[trick.id] %}
+                            {% for i in image %}
+                                {% if i is not empty and i.statut == 'primary' %}
+                                    <a href="{{ trick.id }}" class="trick-title mr-auto" data-toggle="modal" data-target="#trick-{{ trick.id }}">
+                                        <div class="container-{{ i.statut }}">
+                                            <img class="h-100 w-100" src="{{ asset('build/uploads/' ~ i.name) }}" alt="{{ trick.title }} {{ i.name }}">
+                                        </div>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+                <div class="col-12 p-2 d-flex">
+                    <a href="{{ trick.id }}" class="trick-title mr-auto" data-toggle="modal" data-target="#trick-{{ trick.id }}">{{ trick.title }}</a>
+                    {% if app.user.id is defined and app.user.id == trick.author.id %}
+                        <a href="edit-{{ trick.id }}" class="px-2" data-toggle="modal" data-target="#trick-edit-{{ trick.id }}"><i class="fas fa-pen"></i></a>
+                        <form method="post" action="{{ path('trick.delete', {id: trick.id}) }}">
+                            <input type="hidden" name="_method" value="delete">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
+                            <button class="py-0 px-2 btn btn-link text-dark"><i class="fas fa-trash-alt"></i></button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% include 'Modales/trickView.html.twig' %}
+        {% include 'Modales/trickEdit.html.twig' with {'form':formEdit[key]} %}
+        {% include 'Modales/trickNew.html.twig' %}
+    {% endfor %}
+</div>

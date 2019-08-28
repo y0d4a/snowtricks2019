@@ -73,33 +73,10 @@ input:-webkit-autofill {
     flex: 0 0 20%;
     max-width: 20%;
 }
-/*.loader-container{
-    position:relative;
-    height: 100vh;
-}
-.loader {
-    position: absolute;
-    top: calc(50% - 32px);
-    left: calc(50% - 32px);
-    transform: translate(-50%, -50%);
-    border: 16px solid #f3f3f3;
-    border-top: 16px solid #3498db;
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
+.h-33vh{
+    height:33vh;
 }
 
-@-webkit-keyframes spin {
-    0% { -webkit-transform: rotate(0deg); }
-    100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}*/
 .mt-8{
     margin-top: 8vh;
 }
@@ -165,6 +142,32 @@ input:-webkit-autofill {
 .modal-header .close {
     padding: 1rem 1rem 1rem 0.5rem;
     margin: -1rem -1rem -1rem 0;
+}
+.modal-title-primary{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #2e3136;
+    color: white;
+    padding: 3rem;
+}
+.container-primary{
+    z-index: 1;
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.container-trick{
+    position: relative;
+    overflow: hidden;
+    height: 130px;
+}
+.zindex-2{
+    z-index:2;
 }
 @media (min-width: 576px){
     .modal-dialog{
