@@ -1,23 +1,47 @@
 <div class="modal fade" id="trick-{{ trick.id }}" tabindex="-1" role="dialog" aria-labelledby="trickTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{ trick.title }}</h5>
+            <div class="modal-header {% for image in images[trick.id] if image is not empty %}h-33vh p-0 position-relative overflow-hidden{% endfor %}">
+                {% for image in images[trick.id] if image is not empty %}
+                    {% for image in images[trick.id] %}
+                        {% for i in image %}
+                            {% if i is not empty and i.statut == 'primary' %}
+                                <div class="container-{{ i.statut }}">
+                                    <img class="h-100 w-100" src="{{ asset('build/uploads/' ~ i.name) }}" alt="{{ trick.title }} {{ i.name }}">
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+                <h5 class="modal-title{% for image in images[trick.id] if image is not empty %}-primary zindex-2{% endfor %}">{{ trick.title }}</h5>
                 {% if app.user.id is defined and app.user.id == trick.author.id %}
                     <div class="ml-auto d-flex">
-                        <a href="edit-{{ trick.id }}" class="px-2" data-toggle="modal" data-target="#trick-edit-{{ trick.id }}" data-dismiss="modal"><i class="fas fa-pen"></i></a>
-                        <form method="post" action="{{ path('trick.delete', {id: trick.id}) }}">
+                        <a href="edit-{{ trick.id }}" class="py-0 px-2 btn zindex-2" data-toggle="modal" data-target="#trick-edit-{{ trick.id }}" data-dismiss="modal"><i class="fas fa-pen"></i></a>
+                        <form method="post" action="{{ path('trick.delete', {id: trick.id}) }}" class="zindex-2">
                             <input type="hidden" name="_method" value="delete">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
                             <button class="py-0 px-2 btn btn-link text-dark"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </div>
                 {% endif %}
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close zindex-2" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
+                <div class="container-fluid">
+                    {% for image in images[trick.id] %}
+                        {% for i in image %}
+                            {% if i is not empty %}
+                                {% if i.statut == 'primary' %}
+                                        <img class="border border-primary" src="{{ asset('build/uploads/' ~ i.name) }}" alt="{{ trick.title }} {{ i.name }}">
+                                {% else %}
+                                    <img src="{{ asset('build/uploads/' ~ i.name) }}" alt="{{ trick.title }} {{ i.name }}">
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
                 <p class="trick-description">{{ trick.description }}</p>
                 <table class="table border border-dark">
                     <thead class="thead-dark">

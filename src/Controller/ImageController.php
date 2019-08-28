@@ -31,7 +31,7 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @Route("/trick/edit/{id}", name="image.new")
+     * @Route("/trick/edit/{id}", name="image.new", methods="GET|POST")
      */
     public function newImage(Tricks $trick, Request $request)
     {
@@ -39,6 +39,9 @@ class ImageController extends AbstractController
 
         $image = new Image();
         $image->setTrick($trick);
+        if(empty($image->getStatut())){
+            $image->setStatut('secondary');
+        }
 
         $form = $this->createForm(ImageType::class);
         $form->handleRequest($request);
@@ -66,5 +69,38 @@ class ImageController extends AbstractController
             $this->addFlash('success', 'L\'image a bien été sauvegardée');
             return $this->redirectToRoute('tricks');
         }
+    }
+
+    /**
+     * @Route("/trick/edit/{id}", name="image.edit.statut", methods="EDITSTATUT")
+     * @param Tricks $trick
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function editImageStatut(Tricks $trick)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $post = filter_input_array(INPUT_POST);
+        $imageId = filter_var($post["image"]["id"], FILTER_SANITIZE_NUMBER_INT);
+
+        $images[$trick->getId()][] = $this->em->getRepository(Image::class)->findBy(
+            ['trick' => $trick->getId()]
+        );
+
+        foreach($images as $image){
+            foreach($image as $img){
+                foreach($img as $i){
+                    if($i->getId() == $imageId){
+                        $i->setStatut('primary');
+                    } else{
+                        $i->setStatut('secondary');
+                    }
+                    $this->em->persist($i);
+                }
+            }
+        }
+        $this->em->flush();
+        $this->addFlash('success', 'L\'image a bien été modifiée');
+        return $this->redirectToRoute('tricks');
     }
 }
