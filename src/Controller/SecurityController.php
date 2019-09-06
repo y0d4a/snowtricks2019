@@ -54,7 +54,7 @@ class SecurityController extends AbstractController
             $user = $entityManager->getRepository(User::class)->findOneByEmail($email);
             /* @var $user User */
             if ($user === null) {
-                $this->addFlash('danger', 'Email Inconnu');
+                $this->addFlash('danger', 'Email Unknown');
                 return $this->redirectToRoute('home');
             }
             $token = $tokenGenerator->generateToken();
@@ -90,13 +90,13 @@ class SecurityController extends AbstractController
             $user = $entityManager->getRepository(User::class)->findOneByResetToken($token);
             /* @var $user User */
             if ($user === null) {
-                $this->addFlash('danger', 'Token Inconnu');
+                $this->addFlash('danger', 'Token Unknown');
                 return $this->redirectToRoute('home');
             }
             $user->setResetToken(null);
             $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('password')));
             $entityManager->flush();
-            $this->addFlash('notice', 'Mot de passe mis à jour');
+            $this->addFlash('notice', 'Password Updated');
             return $this->redirectToRoute('home');
         }else {
             return $this->render('security/reset_password.html.twig', ['token' => $token]);

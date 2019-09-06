@@ -32,6 +32,9 @@ class ImageController extends AbstractController
 
     /**
      * @Route("/trick/edit/{id}", name="image.new", methods="GET|POST")
+     * @param Tricks $trick
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function newImage(Tricks $trick, Request $request)
     {
@@ -59,14 +62,16 @@ class ImageController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    $this->addFlash('danger', 'L\'image n\'a pas pu être sauvée');
+                    $this->addFlash('danger', 'The image could not been save');
                     return $this->redirectToRoute('tricks');
                 }
                 $image->setName($newFilename);
+                $image->setUser(($trick->getAuthor()));
+                $image->setType('Trick');
             }
             $this->em->persist($image);
             $this->em->flush();
-            $this->addFlash('success', 'L\'image a bien été sauvegardée');
+            $this->addFlash('success', 'Image has been well added');
             return $this->redirectToRoute('tricks');
         }
     }

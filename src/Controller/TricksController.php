@@ -109,6 +109,9 @@ class TricksController extends AbstractController
 
     /**
      * @Route("/tricks/new", name="tricks.new")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @throws \Exception
      */
     public function tricksNew(Request $request)
     {

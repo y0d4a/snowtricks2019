@@ -13,8 +13,8 @@ class TricksType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', null, ['label' => 'Nom du Tricks'])
-            ->add('description', null, ['label' => 'Description du Tricks'])
+            ->add('title', null, ['label' => 'Tricks Name'])
+            ->add('description', null, ['label' => 'Tricks\'s Description'])
             ->add('category', ChoiceType::class, [
                 'choices' => [
                     'Choisissez la catégorie' => [
