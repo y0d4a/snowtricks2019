@@ -45,30 +45,30 @@
                 <p class="trick-description">{{ trick.description }}</p>
                 <table class="table border border-dark">
                     <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Publié par</th>
-                        <th scope="col">Publié le</th>
-                        {% if trick.datePost != trick.dateUpdate %}
-                            <th scope="col">Édité le</th>
-                        {% endif %}
-                        {% if app.user.id is defined and app.user.id != trick.author.id %}
-                            <th scope="col">Édité par</th>
-                        {% endif %}
-                        <th scope="col">Catégorie</th>
-                    </tr>
+                        <tr>
+                            <th scope="col">Publié par</th>
+                            <th scope="col">Publié le</th>
+                            {% if trick.datePost != trick.dateUpdate %}
+                                <th scope="col">Édité le</th>
+                            {% endif %}
+                            {% if app.user.id is defined and app.user.id != trick.author.id %}
+                                <th scope="col">Édité par</th>
+                            {% endif %}
+                            <th scope="col">Catégorie</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>{{  trick.author.username }}</td>
-                        <td>{{ trick.datePost|date("d/m/Y", "Europe/Paris") }}</td>
-                        {% if trick.datePost != trick.dateUpdate %}
-                            <td>{{ trick.dateUpdate|date("d/m/Y", "Europe/Paris") }}</td>
-                        {% endif %}
-                        {% if app.user.id is defined and app.user.id != trick.author.id %}
-                            <td>{{ trick.Editor }}</td>
-                        {% endif %}
-                        <td>{{ trick.category }}</td>
-                    </tr>
+                        <tr>
+                            <td><a href="{{ path('user.profile', {id: trick.author.id}) }}">{{  trick.author.username }}</a></td>
+                            <td>{{ trick.datePost|date("d/m/Y", "Europe/Paris") }}</td>
+                            {% if trick.datePost != trick.dateUpdate %}
+                                <td>{{ trick.dateUpdate|date("d/m/Y", "Europe/Paris") }}</td>
+                            {% endif %}
+                            {% if app.user.id is defined and app.user.id != trick.author.id %}
+                                <td>{{ trick.Editor }}</td>
+                            {% endif %}
+                            <td>{{ trick.category }}</td>
+                        </tr>
                     </tbody>
                 </table>
                 {% if app.user.id is defined %}

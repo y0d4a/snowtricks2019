@@ -23,7 +23,7 @@
                     </li>
                 {% else %}
                     <li class="nav-item d-flex">
-                        <div class="my-auto px-3">Bienvenue <span class="font-weight-bold">{{ app.user.username }}</span></div>
+                        <div class="my-auto px-3">Bienvenue <span class="font-weight-bold"><a href="{{ path('user.edit', {id: app.user.id}) }}">{{ app.user.username }}</a></span></div>
                         <a href="{{ path('app_logout') }}" class="btn btn-danger">Log out</a>
                     </li>
                 {% endif %}

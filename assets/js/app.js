@@ -19,10 +19,27 @@ require("bootstrap");
 // require('bootstrap/js/dist/tooltip');
 // require('bootstrap/js/dist/popover');
 
+
+//-------------------------------- TO SHOW DOC NAME ---------------------------
 $(document).ready(function() {
     $("[data-toggle='popover']").popover();
 
     var input = document.getElementById("image_name");
+    var placeholder = $(".custom-file-label");
+
+    input.addEventListener(
+        "change",
+        function ()
+        {
+            var value = input.value.replace('C:\\fakepath\\', '').trim();
+            placeholder.html(value);
+        }
+    );
+});
+$(document).ready(function() {
+    $("[data-toggle='popover']").popover();
+
+    var input = document.getElementById("profile_picture_profilePicture");
     var placeholder = $(".custom-file-label");
 
     input.addEventListener(

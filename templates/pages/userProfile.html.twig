@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="text-center {{ appFlashes|length > 0 ? 'mt-5' : 'mt-md-15' }} mb-5 d-none d-md-block">Profile of {{ user.username }}</h1>
+    {% if app.user is defined and app.user.id == user.id %}
+        <a href="{{ path('user.edit', {id: app.user.id}) }}" class="btn btn-primary mx-auto my-3">Edit your profile</a>
+    {% endif %}
+
+    <table class="table border border-dark container">
+        <thead class="thead-dark row">
+            <tr class="col-12 row mx-0">
+                <th class="col-20" scope="col">Username</th>
+                <th class="col-20" scope="col">Email</th>
+                <th class="col-20" scope="col">Role</th>
+                <th class="col-20" scope="col">Total Tricks</th>
+                <th class="col-20" scope="col">Total Comments</th>
+            </tr>
+        </thead>
+        <tbody class="row">
+            <tr class="col-12 row mx-0">
+                <td class="col-20">{{ user.username }}</td>
+                <td class="col-20">{{ user.email }}</td>
+                <td class="col-20">{% if user.roles[0] == "ROLE_USER" %}User{% else %}Admin{% endif %}</td>
+                <td class="col-20">{{ tricks }}</td>
+                <td class="col-20">{{ comments }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock body %}

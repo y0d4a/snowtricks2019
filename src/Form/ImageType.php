@@ -15,7 +15,7 @@ class ImageType extends AbstractType
     {
         $builder
             ->add('name', FileType::class, [
-                'label' => 'Ajouter votre image',
+                'label' => 'Add your Image',
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
@@ -24,7 +24,7 @@ class ImageType extends AbstractType
                             'image/pjeg',
                             'image/png',
                         ],
-                        'mimeTypesMessage' => 'Merci d\'entrer un document valide'
+                        'mimeTypesMessage' => 'Please upload a valid image (jpg, jpeg, png or gif)'
                     ])
                 ]
             ])
