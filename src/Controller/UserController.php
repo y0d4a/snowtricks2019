@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\ProfilePictureType;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -64,7 +65,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/user/edit/{id}", name="user.edit", methods="GET|POST")
+     * @Route("/user/edit/{id}", name="user.edit")
      * @param User $user
      * @param UserPasswordEncoderInterface $encoder
      * @return Response
@@ -128,8 +129,6 @@ class UserController extends AbstractController
         }
         $this->addFlash('danger', 'You are not allowed to edit this user');
 
-
-
         $userArray = array(
             'id' => $user->getId(),
             'form' => $formPicture
@@ -156,13 +155,6 @@ class UserController extends AbstractController
                 'action' => $this->generateUrl('user.editPicture', ['id' => $user->getId()])
             ]);
             $formPicture = $form0->createView();
-            $userArray = array(
-                'id' => $user->getId(),
-                'user' => $user,
-                'tricks' => $numberOfTricks,
-                'comments' => $numberOfComments,
-                'form' => $formPicture
-            );
 
             $form = $this->createForm(ProfilePictureType::class, null);
             $form->handleRequest($request);
@@ -170,44 +162,56 @@ class UserController extends AbstractController
 
             if($form->isSubmitted()){
                 $imageName = $form['profilePicture']->getData();
-                $originalFilename = pathinfo($imageName->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename.'.'.$imageName->guessExtension();
+                if($imageName){
+                    $originalFilename = pathinfo($imageName->getClientOriginalName(), PATHINFO_FILENAME);
+                    $newFilename = $originalFilename.'.'.$imageName->guessExtension();
+                    if($user->getProfilePicture() !== null && $newFilename !== null){
+                        $path = "{$this->getParameter('image_directory_profile')}/{$user->getProfilePicture()}";
+                        unlink($path);
+                    }
 
-                try{
-                    $imageName->move(
-                        $this->getParameter('image_directory_profile'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    $this->addFlash('danger', 'The image could not been save');
-                    return $this->redirectToRoute('user.edit', $userArray);
+                    try{
+                        $imageName->move(
+                            $this->getParameter('image_directory_profile'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        $userArray = array(
+                            'id' => $user->getId(),
+                            'user' => $user,
+                            'tricks' => $numberOfTricks,
+                            'comments' => $numberOfComments,
+                            'form' => $formPicture
+                        );
+                        $this->addFlash('danger', 'The image could not been save');
+                        return $this->redirectToRoute('user.edit', $userArray);
+                    }
+                    $user->setProfilePicture($newFilename);
                 }
-                $user->setProfilePicture($newFilename);
+                $userArray = array(
+                    'id' => $user->getId(),
+                    'user' => $user,
+                    'tricks' => $numberOfTricks,
+                    'comments' => $numberOfComments,
+                    'form' => $formPicture
+                );
+
                 $this->em->persist($user);
                 $this->em->flush();
                 $this->addFlash('success', 'Picture well updated');
                 return $this->redirectToRoute('user.edit', $userArray);
             }
+            $userArray = array(
+                'id' => $user->getId(),
+                'user' => $user,
+                'tricks' => $numberOfTricks,
+                'comments' => $numberOfComments,
+                'form' => $formPicture
+            );
             $this->addFlash('danger', 'You got lost there');
             return $this->redirectToRoute('user.edit', $userArray);
             }
 
-        /*if($user == $this->getUser()){
-            $editUserForm = filter_input_array(INPUT_POST);
-            $pictureName = filter_var($editUserForm['user']['picture'], FILTER_SANITIZE_STRING);
-
-            try{
-                $pictureName->move(
-                    $this->getParameter('image_directory_profile'),
-                    $pictureName
-                );
-            } catch (FileException $e) {
-                $this->addFlash('danger', 'The image could not been save');
-                return $this->redirectToRoute('user.edit');
-            }
-            var_dump($editUserForm['user']['picture']);
-            exit;
-        }*/
         $this->addFlash('danger', 'You are not allowed to edit this user');
 
         $userArray = array(

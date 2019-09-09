@@ -30,16 +30,28 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    {% for image in images[trick.id] %}
+                    {% for image in images[trick.id] if image is not empty %}
+                        <div class="row overflow-auto h-200">
                         {% for i in image %}
                             {% if i is not empty %}
                                 {% if i.statut == 'primary' %}
-                                        <img class="border border-primary" src="{{ asset('build/uploads/' ~ i.name) }}" alt="{{ trick.title }} {{ i.name }}">
+                                    <div class="col-2 row h-100 mx-0">
+                                        <div class="h-75 w-100 d-flex">
+                                            <img class="border border-primary mw-100 mh-100 m-auto" src="{{ asset('build/uploads/' ~ i.name) }}" alt="{{ trick.title }} {{ i.name }}">
+                                        </div>
+                                        <div class="text-center my-auto mh-25 image-title">{{ i.name }}</div>
+                                    </div>
                                 {% else %}
-                                    <img src="{{ asset('build/uploads/' ~ i.name) }}" alt="{{ trick.title }} {{ i.name }}">
+                                    <div class="col-2 row h-100 mx-0">
+                                        <div class="h-75 w-100 d-flex">
+                                            <img class="mw-100 mh-100 m-auto" src="{{ asset('build/uploads/' ~ i.name) }}" alt="{{ trick.title }} {{ i.name }}">
+                                        </div>
+                                        <div class="text-center my-auto mh-25 image-title">{{ i.name }}</div>
+                                    </div>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
+                        </div>
                     {% endfor %}
                 </div>
                 <p class="trick-description">{{ trick.description }}</p>
