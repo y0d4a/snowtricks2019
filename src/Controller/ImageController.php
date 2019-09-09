@@ -9,6 +9,7 @@ use App\Repository\ImageRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -34,7 +35,7 @@ class ImageController extends AbstractController
      * @Route("/trick/edit/{id}", name="image.new", methods="GET|POST")
      * @param Tricks $trick
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function newImage(Tricks $trick, Request $request)
     {
@@ -79,7 +80,7 @@ class ImageController extends AbstractController
     /**
      * @Route("/trick/edit/{id}", name="image.edit.statut", methods="EDITSTATUT")
      * @param Tricks $trick
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function editImageStatut(Tricks $trick)
     {
@@ -105,7 +106,34 @@ class ImageController extends AbstractController
             }
         }
         $this->em->flush();
-        $this->addFlash('success', 'L\'image a bien été modifiée');
+        $this->addFlash('success', 'The image has been well modified');
         return $this->redirectToRoute('tricks');
+    }
+
+    /**
+     * @Route("trick/edit/{id}/{i}", name="image.delete", methods="DELETE")
+     * @param $id
+     * @param $i
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function deleteImage($id, $i, Request $request)
+    {
+        if(!empty($id) && !empty($i)){
+            $image = $this->em->getRepository(Image::class)->findOneBy(['id' => $i]);
+            $trick = $this->em->getRepository(Tricks::class)->findOneBy(['id' =>$id]);
+            if(!empty($image) && !empty($trick) && $image->getUser() == $this->getUser() && $this->isCsrfTokenValid('image_delete' . $trick->getId(), $request->get('_token'))){
+                $path = "{$this->getParameter('image_directory')}/{$image->getName()}";
+                unlink($path);
+                $this->em->remove($image);
+                $this->em->flush();
+                $this->addFlash('success', 'File well removed');
+                return $this->redirectToRoute('tricks');
+            }
+
+        }
+        $this->addFlash('danger', 'An error has occured, sorry for the convinience');
+
+        return$this->redirectToRoute('tricks');
     }
 }

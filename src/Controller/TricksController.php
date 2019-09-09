@@ -182,6 +182,7 @@ class TricksController extends AbstractController
     /**
      * @Route("/tricks/edit/{id}", name="trick.delete", methods="DELETE")
      * @param Tricks $trick
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function delete(Tricks $trick, Request $request)

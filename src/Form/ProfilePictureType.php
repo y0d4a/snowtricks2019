@@ -24,7 +24,7 @@ class ProfilePictureType extends AbstractType
     {
         $builder
             ->add('profilePicture', FileType::class, [
-                'label' => 'cono',
+                'label' => 'Profile Picture',
                 'constraints' =>[
                     new File([
                         'maxSize' => '1024k',
@@ -38,12 +38,10 @@ class ProfilePictureType extends AbstractType
                     ])
                 ],
             ])
-        ;
-
-        $builder
             ->add('submit', SubmitType::class, [
                 'label' =>'Submit'
-            ]);
+            ])
+        ;
     }
 
     /**

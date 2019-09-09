@@ -8,7 +8,7 @@
         <h2 class="text-center mb-3">Edit your profile Information</h2>
         <table class="table border border-dark">
             <thead class="thead-dark row">
-            <tr class="col-12 row mx-0">
+            <tr class="col-12 row bug-padding">
                 <th class="col-20" scope="col">Username</th>
                 <th class="col-20" scope="col">Email</th>
                 <th class="col-20" scope="col">Role</th>
@@ -55,7 +55,7 @@
     </form>
     <div class="border border-dark p-4 container my-3">
         <h2 class="text-center mb-3">Edit your profile Picture</h2>
-        <img src="{{ asset('build/uploads/profile/' ~ user.profilePicture) }}" alt="{{ user.profilePicture }}">
+        <div class="row my-3 h-200"><img class="mw-100 mh-100 m-auto" src="{{ asset('build/uploads/profile/' ~ user.profilePicture) }}" alt="{{ user.profilePicture }}"></div>
         {{ form_start(form) }}
         {{ form_widget(form.profilePicture) }}
         <div class="d-flex my-3">
@@ -66,15 +66,4 @@
         {{ form_end(form) }}
     </div>
 
-
-    <!--<form method="post" action="{##}{ path('user.editPicture', {id: app.user.id}) }}" class="border border-dark p-4 container my-3">
-        <h2 class="text-center mb-3">Edit your profile Picture</h2>
-        <label for="image_name" hidden></label>
-        <div class="custom-file">
-            <input type="file" id="image_name" name="user[picture]" class="custom-file-input" required>
-            <label for="image_name" class="custom-file-label"></label>
-        </div>
-        <input type="hidden" name="_method" value="profile">
-        <div class="d-flex"><button type="submit" class="btn btn-primary my-3 mx-auto">Choose main picture</button></div>
-    </form>-->
 {% endblock %}

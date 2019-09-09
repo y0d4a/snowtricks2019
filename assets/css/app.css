@@ -169,6 +169,25 @@ input:-webkit-autofill {
 .zindex-2{
     z-index:2;
 }
+.bug-padding{
+    margin-left: 1px;
+    padding-left: 14px;
+}
+.h-200{
+    height: 200px;
+}
+.mh-75{
+    max-height: 75%;
+}
+.mh-25{
+    max-height: 25%;
+}
+.image-title{
+    white-space: nowrap;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+}
 @media (min-width: 576px){
     .modal-dialog{
         max-width: 75%;
