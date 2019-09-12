@@ -55,7 +55,9 @@
     </form>
     <div class="border border-dark p-4 container my-3">
         <h2 class="text-center mb-3">Edit your profile Picture</h2>
+        {% if user.profilePicture is not empty %}
         <div class="row my-3 h-200"><img class="mw-100 mh-100 m-auto" src="{{ asset('build/uploads/profile/' ~ user.profilePicture) }}" alt="{{ user.profilePicture }}"></div>
+        {% endif %}
         {{ form_start(form) }}
         {{ form_widget(form.profilePicture) }}
         <div class="d-flex my-3">

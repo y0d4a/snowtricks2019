@@ -49,17 +49,19 @@ class UserController extends AbstractController
      * @param User $user
      * @return Response
      */
-    public function userProfile(User $user)
+    public function userProfile(User $user, ImageController $imageController)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $u_id = $user->getId();
         $numberOfTricks = $this->getTotalTricks($u_id);
         $numberOfComments = $this->getTotalComments($u_id);
+        $profilePicture = $imageController->getDefaultImage('profile*');
 
         $userArray = array(
             'user' => $user,
             'tricks' => $numberOfTricks,
-            'comments' => $numberOfComments
+            'comments' => $numberOfComments,
+            'profilePicture' => $profilePicture
         );
         return $this->render('pages/userProfile.html.twig', $userArray);
     }
@@ -158,7 +160,6 @@ class UserController extends AbstractController
 
             $form = $this->createForm(ProfilePictureType::class, null);
             $form->handleRequest($request);
-
 
             if($form->isSubmitted()){
                 $imageName = $form['profilePicture']->getData();

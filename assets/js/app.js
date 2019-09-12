@@ -24,22 +24,16 @@ require("bootstrap");
 $(document).ready(function() {
     $("[data-toggle='popover']").popover();
 
-    var input = document.getElementById("image_name");
-    var placeholder = $(".custom-file-label");
+    if(document.getElementById("image_name")){
+        var input = document.getElementById("image_name");
+    } else if(document.getElementById("profile_picture_profilePicture")){
+        var input = document.getElementById("profile_picture_profilePicture");
+    } else if(document.getElementById("default_profile_picture_default_profile_picture")){
+        var input = document.getElementById("default_profile_picture_default_profile_picture");
+    }else{
+        var input = document.getElementById("default_trick_picture_default_trick_picture");
+    }
 
-    input.addEventListener(
-        "change",
-        function ()
-        {
-            var value = input.value.replace('C:\\fakepath\\', '').trim();
-            placeholder.html(value);
-        }
-    );
-});
-$(document).ready(function() {
-    $("[data-toggle='popover']").popover();
-
-    var input = document.getElementById("profile_picture_profilePicture");
     var placeholder = $(".custom-file-label");
 
     input.addEventListener(

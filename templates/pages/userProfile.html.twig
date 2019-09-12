@@ -5,10 +5,14 @@
     {% if app.user is defined and app.user.id == user.id %}
         <a href="{{ path('user.edit', {id: app.user.id}) }}" class="btn btn-primary mx-auto my-3">Edit your profile</a>
     {% endif %}
-
-    <table class="table border border-dark container">
+    {% if user.profilePicture is not empty %}
+        <div class="row my-3 h-200"><img class="mw-100 mh-100 m-auto" src="{{ asset('build/uploads/profile/' ~ user.profilePicture) }}" alt="{{ user.profilePicture }}"></div>
+    {% else %}
+        <div class="row my-3 h-200"><img class="mw-100 mh-100 m-auto" src="{{ asset('build/uploads/default/' ~ profilePicture) }}" alt="Default Picture"></div>
+    {% endif %}
+    <table class="table border border-dark container mt-3">
         <thead class="thead-dark row">
-            <tr class="col-12 row mx-0">
+            <tr class="col-12 row bug-padding">
                 <th class="col-20" scope="col">Username</th>
                 <th class="col-20" scope="col">Email</th>
                 <th class="col-20" scope="col">Role</th>
@@ -18,8 +22,8 @@
         </thead>
         <tbody class="row">
             <tr class="col-12 row mx-0">
-                <td class="col-20">{{ user.username }}</td>
-                <td class="col-20">{{ user.email }}</td>
+                <td class="col-20 text-break">{{ user.username }}</td>
+                <td class="col-20 text-break">{{ user.email }}</td>
                 <td class="col-20">{% if user.roles[0] == "ROLE_USER" %}User{% else %}Admin{% endif %}</td>
                 <td class="col-20">{{ tricks }}</td>
                 <td class="col-20">{{ comments }}</td>
