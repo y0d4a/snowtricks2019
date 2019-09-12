@@ -16,6 +16,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
+/**
+ * Class TricksController
+ * @package App\Controller
+ */
 class TricksController extends AbstractController
 {
     /**
@@ -28,10 +32,22 @@ class TricksController extends AbstractController
      */
     private $em;
 
-    public function __construct(TricksRepository $repository, ObjectManager $em)
+    /**
+     * @var ImageController
+     */
+    private $imageController;
+
+    /**
+     * TricksController constructor.
+     * @param TricksRepository $repository
+     * @param ObjectManager $em
+     * @param ImageController $imageController
+     */
+    public function __construct(TricksRepository $repository, ObjectManager $em, ImageController $imageController)
     {
         $this->repository = $repository;
         $this->em = $em;
+        $this->imageController = $imageController;
     }
 
     /**
@@ -46,6 +62,10 @@ class TricksController extends AbstractController
         return $this->render('pages/tricks.html.twig',  $response);
     }
 
+    /**
+     * @param $currentMenu
+     * @return array
+     */
     public function tricksList($currentMenu){
 
         $comments = array();
@@ -86,6 +106,9 @@ class TricksController extends AbstractController
             );
         }
 
+        $profilePicture = $this->imageController->getDefaultImage('profile*');
+        $trickPicture = $this->imageController->getDefaultImage('trick*');
+
         /* trick form */
         $newTrick = new Tricks();
         $formNew = $this->createForm(TricksType::class, $newTrick, [
@@ -101,7 +124,9 @@ class TricksController extends AbstractController
             'formsNewComment' => $formsNewComment,
             'comments' => $comments,
             'formImage' => $formsImage,
-            'images' => $images
+            'images' => $images,
+            'profilePicture' => $profilePicture,
+            'trickPicture' => $trickPicture
         );
 
         return $response;
@@ -195,6 +220,10 @@ class TricksController extends AbstractController
         }
     }
 
+    /**
+     * @param $trick
+     * @return bool
+     */
     private function checkTrick($trick)
     {
         $check = $this->repository->findOneBy(['title' => $trick->getTitle()]);

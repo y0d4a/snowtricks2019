@@ -22,8 +22,14 @@
                         <a class="nav-link {% if current_menu is defined and current_menu == 'register' %}active{% endif %}" href="{{ path('user_registration') }}">Sign up</a>
                     </li>
                 {% else %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item d-flex">
+                            <a class="nav-link {% if current_menu is defined and current_menu == 'admin' %}active{% endif %}" href="{{ path('admin') }}">Admin</a>
+                            <span class="nav-link text-dark"> | </span>
+                        </li>
+                    {% endif %}
                     <li class="nav-item d-flex">
-                        <div class="my-auto px-3">Bienvenue <span class="font-weight-bold"><a href="{{ path('user.edit', {id: app.user.id}) }}">{{ app.user.username }}</a></span></div>
+                        <div class="my-auto px-3">Welcome <span class="font-weight-bold"><a href="{{ path('user.edit', {id: app.user.id}) }}">{{ app.user.username }}</a></span></div>
                         <a href="{{ path('app_logout') }}" class="btn btn-danger">Log out</a>
                     </li>
                 {% endif %}

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="text-center {{ appFlashes|length > 0 ? 'mt-5' : 'mt-md-15' }} mb-5 d-none d-md-block">Administration</h1>
+    <div>
+        {% if profilePicture is defined and profilePicture is not empty %}
+            <div class="d-flex h-200 w-50 mx-auto">
+                <img src="{{ asset('build/uploads/default/' ~ profilePicture) }}" alt="Default profile Picture" class="mx-auto mh-100 mw-100">
+            </div>
+        {% endif %}
+        {{ form_start(formProfile) }}
+            {{ form_rest(formProfile) }}
+        {{ form_end(formProfile) }}
+    </div>
+
+    <div>
+        {% if trickPicture is defined and trickPicture is not empty %}
+            <div class="d-flex h-200 w-50 mx-auto">
+                <img src="{{ asset('build/uploads/default/' ~ trickPicture) }}" alt="Default profile Picture" class="mx-auto mh-100 mw-100">
+            </div>
+        {% endif %}
+        {{ form_start(formTrick) }}
+            {{ form_rest(formTrick) }}
+        {{ form_end(formTrick) }}
+    </div>
+{% endblock %}

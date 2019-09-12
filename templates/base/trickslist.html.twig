@@ -16,6 +16,13 @@
                             {% endfor %}
                         {% endfor %}
                     {% endfor %}
+                    {% for image in images[trick.id] if image is empty %}
+                        <a href="{{ trick.id }}" class="trick-title mr-auto" data-toggle="modal" data-target="#trick-{{ trick.id }}">
+                            <div class="container-primary">
+                                <img class="h-100 w-100" src="{{ asset('build/uploads/default/' ~ trickPicture) }}" alt="Default Trick Image">
+                            </div>
+                        </a>
+                    {% endfor %}
                 </div>
                 <div class="col-12 p-2 d-flex">
                     <a href="{{ trick.id }}" class="trick-title mr-auto" data-toggle="modal" data-target="#trick-{{ trick.id }}">{{ trick.title }}</a>

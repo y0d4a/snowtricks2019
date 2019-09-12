@@ -4,15 +4,23 @@ namespace App\Controller;
 
 use App\Entity\Image;
 use App\Entity\Tricks;
+use App\Form\DefaultProfilePictureType;
+use App\Form\DefaultTrickPictureType;
 use App\Form\ImageType;
 use App\Repository\ImageRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class ImageController
+ * @package App\Controller
+ */
 class ImageController extends AbstractController
 {
     /**
@@ -25,6 +33,11 @@ class ImageController extends AbstractController
      */
     private $em;
 
+    /**
+     * ImageController constructor.
+     * @param ImageRepository $repository
+     * @param ObjectManager $em
+     */
     public function __construct(ImageRepository $repository, ObjectManager $em)
     {
         $this->repository = $repository;
@@ -135,5 +148,98 @@ class ImageController extends AbstractController
         $this->addFlash('danger', 'An error has occured, sorry for the convinience');
 
         return$this->redirectToRoute('tricks');
+    }
+
+    /**
+     * @Route("admin/default/{type}", name="image.default")
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function defaultProfile(Request $request, $type)
+    {
+        $hasAccess = $this->isGranted('ROLE_ADMIN');
+        if($hasAccess){
+            if($type == 'profile'){
+                $form = $this->createForm(DefaultProfilePictureType::class, null);
+                $form->handleRequest($request);
+            }
+            elseif ($type == 'trick'){
+                $form = $this->createForm(DefaultTrickPictureType::class, null);
+                $form->handleRequest($request);
+            }
+            elseif ($type !== 'profile' || $type !== 'trick'){
+                $this->addFlash('danger', 'Default Type must be profile or trick');
+                return $this->redirectToRoute('admin');
+            }
+            if($form->isSubmitted() && $form->isValid()){
+                $imageName = $form['default_' . $type . '_picture']->getData();
+                if($imageName){
+                    $this->updateDefaultPictures($imageName, $type);
+                }
+                $this->addFlash('success', 'Image has been well added');
+                return $this->redirectToRoute('admin');
+            }
+            $this->addFlash('danger', 'Form is not correct');
+            return $this->redirectToRoute('admin');
+        }
+        $this->addFlash('danger', 'Nice try but you are not Admin');
+        return $this->redirectToRoute('tricks');
+    }
+
+    /**
+     * @param $imageName
+     * @param $name
+     * @return RedirectResponse
+     */
+    private function updateDefaultPictures($imageName, $name)
+    {
+        $this->deleteDefaultImage($name .'*');
+
+        $originalFilename = $name;
+        $newFilename = $originalFilename.'.'.$imageName->guessExtension();
+
+        try{
+            $imageName->move(
+                $this->getParameter('image_directory_default'),
+                $newFilename
+            );
+        } catch (FileException $e) {
+            $this->addFlash('danger', 'The image could not been save');
+            return $this->redirectToRoute('tricks');
+        }
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    private function deleteDefaultImage($name)
+    {
+        $finder = new Finder();
+        $finder->files()->in("{$this->getParameter('image_directory_default')}/")->name($name);
+        if($finder->hasResults()){
+            foreach ($finder as $file) {
+                $absoluteFilePath = $file->getRealPath();
+                unlink($absoluteFilePath);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param $name
+     * @return string|null
+     */
+    public function getDefaultImage($name)
+    {
+        $finder = new Finder();
+        $finder->files()->in("{$this->getParameter('image_directory_default')}/")->name($name);
+        if($finder->hasResults()){
+            foreach ($finder as $file) {
+                $fileNameWithExtension = $file->getRelativePathname();
+            }
+            return $fileNameWithExtension;
+        }
+        return null;
     }
 }

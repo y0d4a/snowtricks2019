@@ -19,11 +19,16 @@ class HomeController extends AbstractController
      * @var ObjectManager
      */
     private $em;
+    /**
+     * @var ImageController
+     */
+    private $imageController;
 
-    public function __construct(TricksRepository $repository, ObjectManager $em)
+    public function __construct(TricksRepository $repository, ObjectManager $em, ImageController $imageController)
     {
         $this->repository = $repository;
         $this->em = $em;
+        $this->imageController = $imageController;
     }
 
     /**
