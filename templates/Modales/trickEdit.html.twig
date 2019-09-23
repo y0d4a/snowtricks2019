@@ -20,6 +20,11 @@
                     <button class="btn btn-primary">Upload image</button>
                     {{ form_end(formImage[trick.id]) }}
 
+                    {{ form_start(formVideo[trick.id]) }}
+                    {{ form_rest(formVideo[trick.id]) }}
+                    <button class="btn btn-primary">Add video</button>
+                    {{ form_end(formVideo[trick.id]) }}
+
                     <div class="container-fluid">
                         {% for image in images[trick.id] if image is not empty %}
                             <div class="row overflow-auto h-200">

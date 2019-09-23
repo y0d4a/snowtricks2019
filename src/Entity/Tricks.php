@@ -70,11 +70,17 @@ class Tricks
      */
     private $images;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Videos", mappedBy="tricks", orphanRemoval=true)
+     */
+    private $videos;
+
     public function __construct()
     {
         $this->dateUpdate = new \DateTime('now');
         $this->comments = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -233,6 +239,37 @@ class Tricks
             // set the owning side to null (unless already changed)
             if ($image->getTrick() === $this) {
                 $image->setTrick(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Videos[]
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(Videos $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setTricks($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Videos $video): self
+    {
+        if ($this->videos->contains($video)) {
+            $this->videos->removeElement($video);
+            // set the owning side to null (unless already changed)
+            if ($video->getTricks() === $this) {
+                $video->setTricks(null);
             }
         }
 

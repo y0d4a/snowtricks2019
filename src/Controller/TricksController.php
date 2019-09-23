@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Image;
 use App\Entity\Tricks;
+use App\Entity\Videos;
 use App\Form\CommentType;
 use App\Form\ImageType;
 use App\Form\TricksType;
+use App\Form\VideosType;
 use App\Repository\TricksRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -104,6 +106,13 @@ class TricksController extends AbstractController
             $images[$trick->getId()][] = $this->em->getRepository(Image::class)->findBy(
                 ['trick' => $trick->getId()]
             );
+
+            /* Add videos form */
+            $newVideo = new Videos();
+            $formVideo = $this->createForm(VideosType::class, $newVideo, [
+                'action' => $this->generateUrl('videos.add', ['id' => $trick->getId()])
+            ]);
+            $formsVideo[$trick->getId()] = $formVideo->createView();
         }
 
         $profilePicture = $this->imageController->getDefaultImage('profile*');
@@ -126,7 +135,8 @@ class TricksController extends AbstractController
             'formImage' => $formsImage,
             'images' => $images,
             'profilePicture' => $profilePicture,
-            'trickPicture' => $trickPicture
+            'trickPicture' => $trickPicture,
+            'formVideo' => $formsVideo
         );
 
         return $response;
