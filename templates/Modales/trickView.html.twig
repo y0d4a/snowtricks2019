@@ -30,8 +30,9 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
+                {% if images[trick.id] is not empty or videos[trick.id] is not empty %}
+                    <div class="col-12 container-media h-200">
                     {% for image in images[trick.id] if image is not empty %}
-                        <div class="row overflow-auto h-200">
                         {% for i in image %}
                             {% if i is not empty %}
                                 {% if i.statut == 'primary' %}
@@ -51,8 +52,14 @@
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
-                        </div>
                     {% endfor %}
+                    {% for video in videos[trick.id] if video is not empty %}
+                        {% for v in video %}
+                            <iframe class="col-3 h-100" src="{{ v.url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        {% endfor %}
+                    {% endfor %}
+                    </div>
+                {% endif %}
                 </div>
                 <p class="trick-description">{{ trick.description }}</p>
                 <table class="table border border-dark">

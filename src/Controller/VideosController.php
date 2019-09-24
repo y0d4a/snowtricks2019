@@ -80,4 +80,22 @@ class VideosController extends AbstractController
         }
         return $this->redirectToRoute('tricks');
     }
+
+    /**
+     * @param Videos $video
+     * @param Request $request
+     * @Route("/video/delete/{id}", name="video.delete")
+     * @return RedirectResponse
+     */
+    public function deleteVideo(Videos $video, Request $request)
+    {
+        if($this->getUser() == $video->getTricks()->getAuthor() && $this->isCsrfTokenValid('video_delete' . $video->getTricks()->getId(), $request->get('_token'))){
+            $this->em->remove($video);
+            $this->em->flush();
+            $this->addFlash('success', 'Video has been well deleted');
+            return $this->redirectToRoute('tricks');
+        }
+        $this->addFlash('danger', 'You are not allowed to delete this video');
+        return $this->redirectToRoute('tricks');
+    }
 }
