@@ -52,9 +52,24 @@ class VideosController extends AbstractController
         $form->handleRequest($request);
 
         if(is_numeric($id) && $trick->getAuthor() == $this->getUser() && $form->isSubmitted() && $form->isValid()){
-            $this->em->persist($video);
-            $this->em->flush();
-            $this->addFlash('success', 'Video correctly update');
+            $url = $video->getUrl();
+            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $youtubeMatch);
+            preg_match('%(?:https?://)?(?:www\.)?(?:dai\.ly/|dailymotion\.com(?:/video/|/embed/|/embed/video/))([^^&?/ ]{7})%i', $url, $dailymotionMatch);
+
+            if(!empty($youtubeMatch) || !empty($dailymotionMatch)){
+                if(!empty($youtubeMatch)){
+                    $newUrl = "https://www.youtube.com/embed/$youtubeMatch[1]";
+                }elseif (!empty($dailymotionMatch)){
+                    $newUrl = "https://www.dailymotion.com/embed/video/$dailymotionMatch[1]";
+                }
+
+                $video->setUrl($newUrl);
+                $this->em->persist($video);
+                $this->em->flush();
+                $this->addFlash('success', 'Video correctly update');
+                return $this->redirectToRoute('tricks');
+            }
+            $this->addFlash('danger', 'URL must be from Youtube or DailyMotion');
             return $this->redirectToRoute('tricks');
         }
         $errors = $form['url']->getErrors();
