@@ -132,7 +132,7 @@ class ImageController extends AbstractController
      */
     public function deleteImage($id, $i, Request $request)
     {
-        if(!empty($id) && !empty($i)){
+        if(is_numeric($id) && is_numeric($i) && !empty($id) && !empty($i)){
             $image = $this->em->getRepository(Image::class)->findOneBy(['id' => $i]);
             $trick = $this->em->getRepository(Tricks::class)->findOneBy(['id' =>$id]);
             if(!empty($image) && !empty($trick) && $image->getUser() == $this->getUser() && $this->isCsrfTokenValid('image_delete' . $trick->getId(), $request->get('_token'))){

@@ -166,6 +166,12 @@ input:-webkit-autofill {
     overflow: hidden;
     height: 130px;
 }
+.container-media{
+    display: flex;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
 .zindex-2{
     z-index:2;
 }

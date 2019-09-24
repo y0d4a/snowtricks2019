@@ -26,8 +26,9 @@
                     {{ form_end(formVideo[trick.id]) }}
 
                     <div class="container-fluid">
-                        {% for image in images[trick.id] if image is not empty %}
-                            <div class="row overflow-auto h-200">
+                        {% if images[trick.id] is not empty or videos[trick.id] is not empty %}
+                            <div class="col-12 container-media h-200">
+                            {% for image in images[trick.id] if image is not empty %}
                                 {% for i in image %}
                                     {% if i is not empty %}
                                         {% if i.statut == 'primary' %}
@@ -57,8 +58,19 @@
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
+                            {% endfor %}
+                            {% for video in videos[trick.id] if video is not empty %}
+                                {% for v in video %}
+                                    <iframe class="col-3 h-100" src="{{ v.url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    <form method="post" action="{{ path('video.delete', {id: v.id}) }}" class="zindex-2">
+                                        <input type="hidden" name="_method" value="delete">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('video_delete' ~ trick.id) }}">
+                                        <button class="py-0 px-2 btn btn-link text-dark"><i class="fas fa-trash-alt"></i></button>
+                                    </form>
+                                {% endfor %}
+                            {% endfor %}
                             </div>
-                        {% endfor %}
+                        {% endif %}
                     </div>
 
                     {% for image in images[trick.id] if image is not empty %}
