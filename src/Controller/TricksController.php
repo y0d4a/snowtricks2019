@@ -113,6 +113,11 @@ class TricksController extends AbstractController
                 'action' => $this->generateUrl('videos.add', ['id' => $trick->getId()])
             ]);
             $formsVideo[$trick->getId()] = $formVideo->createView();
+
+            /* Videos view */
+            $videos[$trick->getId()][] = $this->em->getRepository(Videos::class)->findBy(
+                ['tricks' => $trick->getId()]
+            );
         }
 
         $profilePicture = $this->imageController->getDefaultImage('profile*');
@@ -136,7 +141,8 @@ class TricksController extends AbstractController
             'images' => $images,
             'profilePicture' => $profilePicture,
             'trickPicture' => $trickPicture,
-            'formVideo' => $formsVideo
+            'formVideo' => $formsVideo,
+            'videos' => $videos
         );
 
         return $response;

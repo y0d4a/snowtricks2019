@@ -25,7 +25,7 @@ class Videos
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Regex(
-     *     pattern="#^(http|https)://(www.youtube.com|www.youtu.be|www.dailymotion.com)/#",
+     *     pattern="#^(http|https)://(www.youtube.com|youtu.be|www.dailymotion.com|dai.ly)/#",
      *     match=true,
      *     message="URL must be from Youtube or DailyMotion"
      * )
